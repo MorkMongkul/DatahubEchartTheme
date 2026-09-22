@@ -5,6 +5,22 @@ import { generateEChartsTheme, generateThemeJsFile, generateThemeConfigForDownlo
 // Predefined themes configuration
 export const PRE_DEFINED_THEMES: PreDefinedTheme[] = markRaw([
   {
+    name: 'datahub',
+    background: 'rgba(0, 0, 0, 0)',
+    theme: [
+      '#14a0b8', '#4994df', '#4c41c8', '#8f3d8f',
+      '#da2f54', '#f59847', '#bd910f', '#485922'
+    ]
+  },
+  {
+    name: 'datahub-dark',
+    background: '#0b1220',
+    theme: [
+      '#14a0b8', '#4994df', '#4c41c8', '#8f3d8f',
+      '#da2f54', '#f59847', '#bd910f', '#485922'
+    ]
+  },
+  {
     name: 'v5',
     background: 'rgba(0, 0, 0, 0)',
     theme: [

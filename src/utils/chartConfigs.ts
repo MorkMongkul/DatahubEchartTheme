@@ -35,6 +35,43 @@ export function getChartConfigs(seriesCnt: number = 4): ChartConfig[] {
     }
   }
 
+  const donutData = legendData.map(name => ({
+    name,
+    value: getRandomValue(800, 200)
+  }))
+  const donutTotal = donutData.reduce((sum, d) => sum + d.value, 0)
+
+  // Must match properties.shapeName in public/maps/cambodia.json
+  const cambodiaProvinces = [
+    'Bantey Meanchey', 'Battambang', 'Kampong Cham', 'Kampong Chhnang', 'Kampong Speu',
+    'Kampong Thom', 'Kampot', 'Kandal', 'Kep', 'Koh Kong', 'Kratie', 'Mondulkiri',
+    'Oddar Meanchey', 'Pailin', 'Phnom Penh', 'Preah Sihanouk', 'Preah Vihear', 'Prey Veng',
+    'Pursat', 'Ratanakiri Province', 'Siem Reap', 'Stung Treng', 'Svay Rieng', 'Takeo',
+    'Tbong Khmum'
+  ]
+  // Must match properties.NAME in public/maps/world.json; other countries stay "no data"
+  const worldCountries = [
+    'China', 'Vietnam', 'Thailand', 'United States of America', 'Japan', 'South Korea',
+    'Germany', 'United Kingdom', 'Malaysia', 'Indonesia', 'India', 'Canada', 'Australia',
+    'France', 'Russia', 'Brazil'
+  ]
+
+  const yearCat = ['2018', '2019', '2020', '2021', '2022', '2023', '2024']
+  const gaugeValue = getRandomValue(95, 40)
+
+  // [longitude, latitude]: Phnom Penh and sample partner capitals for the flow map
+  const tradeOrigin = [104.92, 11.56]
+  const tradePartners = [
+    { name: 'Hanoi', coord: [105.85, 21.03] },
+    { name: 'Bangkok', coord: [100.5, 13.75] },
+    { name: 'Beijing', coord: [116.41, 39.9] },
+    { name: 'Singapore', coord: [103.82, 1.35] },
+    { name: 'Tokyo', coord: [139.69, 35.69] },
+    { name: 'Washington', coord: [-77.04, 38.91] },
+    { name: 'Berlin', coord: [13.4, 52.52] },
+    { name: 'London', coord: [-0.13, 51.51] }
+  ]
+
   const configs: ChartConfig[] = [
     // Line Chart
     {
@@ -166,6 +203,88 @@ export function getChartConfigs(seriesCnt: number = 4): ChartConfig[] {
       }
     },
 
+    // Grouped Bar Chart
+    {
+      title: 'Grouped Bar Chart',
+      subtitle: 'Grouped bars with zoom slider',
+      type: 'groupedBar',
+      option: {
+        title: {
+          text: 'Grouped Bar Chart',
+          subtext: 'Grouped bars with zoom slider'
+        },
+        legend: {
+          data: legendData
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: { type: 'shadow' }
+        },
+        toolbox: commonToolbox,
+        grid: { bottom: 110 },
+        dataZoom: [
+          { type: 'inside' },
+          { type: 'slider', bottom: 45 }
+        ],
+        xAxis: {
+          type: 'category',
+          data: yearCat
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: legendData.map(name => ({
+          name,
+          type: 'bar' as const,
+          barMaxWidth: 20,
+          data: getRandomArray(yearCat.length, 800, 200)
+        }))
+      }
+    },
+
+    // Dual-Axis Chart
+    {
+      title: 'Dual-Axis Chart',
+      subtitle: 'Bars with a line on a second axis',
+      type: 'combo',
+      option: {
+        title: {
+          text: 'Dual-Axis Chart',
+          subtext: 'Bars with a line on a second axis'
+        },
+        legend: {
+          data: [...legendData, 'Growth (%)']
+        },
+        tooltip: commonTooltip,
+        toolbox: commonToolbox,
+        xAxis: {
+          type: 'category',
+          data: yearCat
+        },
+        yAxis: [
+          { type: 'value' },
+          {
+            type: 'value',
+            axisLabel: { formatter: '{value}%' },
+            splitLine: { show: false }
+          }
+        ],
+        series: [
+          ...legendData.map(name => ({
+            name,
+            type: 'bar' as const,
+            data: getRandomArray(yearCat.length, 800, 200)
+          })),
+          {
+            name: 'Growth (%)',
+            type: 'line' as const,
+            yAxisIndex: 1,
+            data: getRandomArray(yearCat.length, 12, 2)
+          }
+        ]
+      }
+    },
+
     // Scatter Chart
     {
       title: 'Scatter Chart',
@@ -237,6 +356,52 @@ export function getChartConfigs(seriesCnt: number = 4): ChartConfig[] {
       }
     },
 
+    // Donut Chart
+    {
+      title: 'Donut Chart',
+      subtitle: 'Donut chart with center total',
+      type: 'donut',
+      option: {
+        title: {
+          text: 'Donut Chart',
+          subtext: 'Donut chart with center total'
+        },
+        legend: {
+          orient: 'vertical',
+          right: 16,
+          top: 'middle',
+          data: legendData
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b}: {c} ({d}%)'
+        },
+        toolbox: commonToolbox,
+        series: [{
+          name: 'Data',
+          type: 'pie' as const,
+          radius: ['48%', '70%'],
+          center: ['38%', '58%'],
+          avoidLabelOverlap: false,
+          label: {
+            show: true,
+            position: 'center',
+            formatter: () => `{sub|Total}\n{stat|${donutTotal}}`,
+            rich: {
+              sub: { fontSize: 12, lineHeight: 18 },
+              stat: { fontSize: 26, lineHeight: 32, fontWeight: 700 }
+            }
+          },
+          emphasis: {
+            scale: true,
+            scaleSize: 6,
+            label: { show: true }
+          },
+          data: donutData
+        }]
+      }
+    },
+
     // Radar Chart
     {
       title: 'Radar Chart',
@@ -264,6 +429,38 @@ export function getChartConfigs(seriesCnt: number = 4): ChartConfig[] {
             name
           }]
         }))
+      }
+    },
+
+    // Gauge Chart
+    {
+      title: 'Gauge Chart',
+      subtitle: 'Progress towards a target',
+      type: 'gauge',
+      option: {
+        title: {
+          text: 'Gauge Chart',
+          subtext: 'Progress towards a target'
+        },
+        tooltip: {
+          formatter: '{b}: {c}%'
+        },
+        toolbox: commonToolbox,
+        series: [{
+          name: 'Progress',
+          type: 'gauge' as const,
+          center: ['50%', '64%'],
+          radius: '78%',
+          progress: { show: true, width: 14 },
+          axisLine: { lineStyle: { width: 14 } },
+          axisTick: { show: false },
+          splitLine: { length: 8 },
+          detail: {
+            valueAnimation: true,
+            formatter: '{value}%'
+          },
+          data: [{ value: gaugeValue, name: 'Target' }]
+        }]
       }
     },
 
@@ -408,6 +605,54 @@ export function getChartConfigs(seriesCnt: number = 4): ChartConfig[] {
       }
     },
 
+    // Sunburst Chart
+    {
+      title: 'Sunburst Chart',
+      subtitle: 'Hierarchy of shares',
+      type: 'sunburst',
+      option: {
+        title: {
+          text: 'Sunburst Chart',
+          subtext: 'Hierarchy of shares'
+        },
+        tooltip: {
+          trigger: 'item'
+        },
+        toolbox: commonToolbox,
+        series: [{
+          type: 'sunburst' as const,
+          center: ['50%', '58%'],
+          radius: ['12%', '75%'],
+          label: { minAngle: 15 },
+          data: [
+            {
+              name: 'Sector A',
+              children: [
+                { name: 'A1', value: 6 },
+                { name: 'A2', value: 4 },
+                { name: 'A3', value: 3 }
+              ]
+            },
+            {
+              name: 'Sector B',
+              children: [
+                { name: 'B1', value: 5 },
+                { name: 'B2', value: 4 }
+              ]
+            },
+            {
+              name: 'Sector C',
+              children: [
+                { name: 'C1', value: 5 },
+                { name: 'C2', value: 3 },
+                { name: 'C3', value: 2 }
+              ]
+            }
+          ]
+        }]
+      }
+    },
+
     // Graph/Network Chart
     {
       title: 'Graph Chart',
@@ -475,6 +720,236 @@ export function getChartConfigs(seriesCnt: number = 4): ChartConfig[] {
             curveness: 0.3
           }
         }]
+      }
+    },
+
+    // Sankey Chart
+    {
+      title: 'Sankey Chart',
+      subtitle: 'Flow between three stages',
+      type: 'sankey',
+      option: {
+        title: {
+          text: 'Sankey Chart',
+          subtext: 'Flow between three stages'
+        },
+        tooltip: {
+          trigger: 'item',
+          triggerOn: 'mousemove'
+        },
+        toolbox: commonToolbox,
+        series: [{
+          type: 'sankey' as const,
+          top: 70,
+          bottom: 20,
+          left: 24,
+          right: 90,
+          nodeWidth: 14,
+          nodeGap: 12,
+          emphasis: { focus: 'adjacency' },
+          lineStyle: {
+            color: 'gradient',
+            opacity: 0.5,
+            curveness: 0.5
+          },
+          data: [
+            { name: 'Source A' }, { name: 'Source B' }, { name: 'Source C' },
+            { name: 'Stage 1' }, { name: 'Stage 2' }, { name: 'Stage 3' },
+            { name: 'Target X' }, { name: 'Target Y' }
+          ],
+          links: [
+            { source: 'Source A', target: 'Stage 1', value: 8 },
+            { source: 'Source A', target: 'Stage 2', value: 5 },
+            { source: 'Source B', target: 'Stage 2', value: 6 },
+            { source: 'Source B', target: 'Stage 3', value: 4 },
+            { source: 'Source C', target: 'Stage 1', value: 3 },
+            { source: 'Source C', target: 'Stage 3', value: 7 },
+            { source: 'Stage 1', target: 'Target X', value: 7 },
+            { source: 'Stage 1', target: 'Target Y', value: 4 },
+            { source: 'Stage 2', target: 'Target X', value: 5 },
+            { source: 'Stage 2', target: 'Target Y', value: 6 },
+            { source: 'Stage 3', target: 'Target X', value: 6 },
+            { source: 'Stage 3', target: 'Target Y', value: 5 }
+          ]
+        }]
+      }
+    },
+
+    // Chord Chart
+    {
+      title: 'Chord Chart',
+      subtitle: 'Flows between groups',
+      type: 'chord',
+      option: {
+        title: {
+          text: 'Chord Chart',
+          subtext: 'Flows between groups'
+        },
+        tooltip: {
+          trigger: 'item'
+        },
+        toolbox: commonToolbox,
+        series: [{
+          type: 'chord' as const,
+          center: ['50%', '58%'],
+          radius: ['50%', '58%'],
+          lineStyle: {
+            color: 'gradient',
+            opacity: 0.5
+          },
+          data: [
+            { name: 'A' }, { name: 'B' }, { name: 'C' },
+            { name: 'D' }, { name: 'E' }, { name: 'F' }
+          ],
+          links: [
+            { source: 'A', target: 'B', value: 12 },
+            { source: 'A', target: 'C', value: 8 },
+            { source: 'A', target: 'E', value: 5 },
+            { source: 'B', target: 'C', value: 9 },
+            { source: 'B', target: 'D', value: 6 },
+            { source: 'C', target: 'D', value: 7 },
+            { source: 'C', target: 'F', value: 4 },
+            { source: 'D', target: 'E', value: 10 },
+            { source: 'D', target: 'F', value: 6 },
+            { source: 'E', target: 'F', value: 8 },
+            { source: 'E', target: 'B', value: 5 },
+            { source: 'F', target: 'A', value: 7 }
+          ]
+        }]
+      }
+    },
+
+    // Map Chart (Cambodia provinces)
+    {
+      title: 'Cambodia Map',
+      subtitle: 'Choropleth by province',
+      type: 'map',
+      option: {
+        title: {
+          text: 'Cambodia Map',
+          subtext: 'Choropleth by province'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b}: {c}'
+        },
+        toolbox: commonToolbox,
+        visualMap: {
+          min: 0,
+          max: 100,
+          left: 16,
+          bottom: 16,
+          text: ['High', 'Low'],
+          calculable: true
+        },
+        series: [{
+          name: 'Value',
+          type: 'map' as const,
+          map: 'cambodia',
+          nameProperty: 'shapeName',
+          roam: false,
+          top: 60,
+          label: { show: true, fontSize: 9 },
+          labelLayout: { hideOverlap: true },
+          data: cambodiaProvinces.map(name => ({
+            name,
+            value: getRandomValue(100, 5)
+          }))
+        }]
+      }
+    },
+
+    // Map Chart (World countries)
+    {
+      title: 'World Map',
+      subtitle: 'Choropleth by country',
+      type: 'map',
+      option: {
+        title: {
+          text: 'World Map',
+          subtext: 'Choropleth by country'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b}: {c}'
+        },
+        toolbox: commonToolbox,
+        visualMap: {
+          min: 0,
+          max: 100,
+          orient: 'horizontal',
+          left: 'center',
+          bottom: 10,
+          text: ['High', 'Low'],
+          calculable: true
+        },
+        series: [{
+          name: 'Value',
+          type: 'map' as const,
+          map: 'world',
+          nameProperty: 'NAME',
+          roam: false,
+          top: 70,
+          bottom: 50,
+          label: { show: false },
+          data: worldCountries.map(name => ({
+            name,
+            value: getRandomValue(100, 5)
+          }))
+        }]
+      }
+    },
+
+    // Flow Map (lines on the world map)
+    {
+      title: 'Flow Map',
+      subtitle: 'Sample flows from Phnom Penh',
+      type: 'lines',
+      option: {
+        title: {
+          text: 'Flow Map',
+          subtext: 'Sample flows from Phnom Penh'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b}'
+        },
+        toolbox: commonToolbox,
+        geo: {
+          map: 'world',
+          nameProperty: 'NAME',
+          roam: false,
+          top: 70,
+          bottom: 20
+        },
+        series: [
+          {
+            name: 'Flows',
+            type: 'lines' as const,
+            coordinateSystem: 'geo',
+            symbol: ['none', 'arrow'],
+            symbolSize: 6,
+            lineStyle: {
+              width: 1.5,
+              opacity: 0.7,
+              curveness: 0.25
+            },
+            data: tradePartners.map(p => ({
+              name: `Phnom Penh to ${p.name}`,
+              coords: [tradeOrigin, p.coord]
+            }))
+          },
+          {
+            name: 'Partners',
+            type: 'scatter' as const,
+            coordinateSystem: 'geo',
+            symbolSize: 7,
+            data: tradePartners.map(p => ({
+              name: p.name,
+              value: [...p.coord, getRandomValue(100, 20)]
+            }))
+          }
+        ]
       }
     },
 

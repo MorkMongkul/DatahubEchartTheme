@@ -23,6 +23,7 @@
 import { onMounted, onUnmounted, watch, computed, markRaw, nextTick } from 'vue'
 import * as echarts from 'echarts'
 import { getChartConfigs } from '../utils/chartConfigs'
+import { ensureMapsRegistered } from '../utils/maps'
 import { useThemeStore } from '../stores/theme'
 import type { ECharts } from 'echarts'
 import { useI18n } from 'vue-i18n'
@@ -100,9 +101,10 @@ function handleResize() {
 
 const debouncedHandleResize = debounce(handleResize, 100)
 
-onMounted(() => {
-  updateCharts()
+onMounted(async () => {
   window.addEventListener('resize', debouncedHandleResize)
+  await ensureMapsRegistered().catch(error => console.error('Failed to load map data:', error))
+  updateCharts()
 })
 
 onUnmounted(() => {

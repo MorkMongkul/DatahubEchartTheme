@@ -1,0 +1,15 @@
+Map data used by the preview charts
+
+cambodia.json
+  Cambodia ADM1 (25 provinces), geoBoundaries gbOpen, simplified geometry,
+  boundary year 2017. Included unmodified.
+  Source data: OpenStreetMap contributors (via Wambacher).
+  License: Open Data Commons Open Database License (ODbL) 1.0
+  https://www.geoboundaries.org
+  https://www.openstreetmap.org/copyright
+
+world.json
+  Natural Earth 1:110m Admin 0 - Countries (public domain).
+  https://www.naturalearthdata.com
+  Antarctica removed; properties reduced to NAME, ISO_A3 and CONTINENT;
+  coordinates rounded to 3 decimals.

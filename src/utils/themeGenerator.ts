@@ -120,6 +120,31 @@ export function generateEChartsTheme(themeData: ThemeData) {
     }
   }
 
+  // Generate gauge configuration (its dial isn't a cartesian axis, so it doesn't
+  // pick up categoryAxis/valueAxis styling; reuse the general "all" axis instead)
+  const generalAxis = themeData.axes[0]
+  const gaugeConfig = {
+    ...border,
+    axisLine: {
+      lineStyle: {
+        color: [[1, generalAxis.axisLineColor]]
+      }
+    },
+    axisTick: {
+      lineStyle: {
+        color: generalAxis.axisTickColor
+      }
+    },
+    splitLine: {
+      lineStyle: {
+        color: generalAxis.axisLineColor
+      }
+    },
+    axisLabel: {
+      color: generalAxis.axisLabelColor
+    }
+  }
+
   // Generate bar configuration
   const barConfig = {
     itemStyle: {
@@ -164,7 +189,7 @@ export function generateEChartsTheme(themeData: ThemeData) {
     parallel: border,
     sankey: border,
     funnel: border,
-    gauge: border,
+    gauge: gaugeConfig,
     candlestick: candlestickConfig,
     graph: graphStyle,
     map: mapConfig,
