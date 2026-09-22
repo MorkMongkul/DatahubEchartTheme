@@ -60,7 +60,7 @@ function setChartDomRef(el: any, index: number) {
 }
 
 // Original update charts implementation
-function _updateChartsImpl() {
+async function _updateChartsImpl() {
   // Dispose existing charts
   chartInstances.forEach(chart => chart.dispose())
   chartInstances.length = 0
@@ -71,15 +71,26 @@ function _updateChartsImpl() {
   echarts.registerTheme(themeId, currentTheme)
 
   const chartLocale = locale.value === 'zh' ? 'ZH' : 'EN'
+
+  // Maps must be registered before any map/geo chart's setOption runs. This is
+  // cheap after the first call (the underlying fetch is cached), so awaiting it
+  // on every render keeps map charts correct even if a theme/locale change fires
+  // before the initial mount's registration has resolved.
+  await ensureMapsRegistered().catch(error => console.error('Failed to load map data:', error))
+
   // Recreate charts with new theme
   nextTick(() => {
     displayedCharts.value.forEach((config, index) => {
       const container = chartDoms[index]
-      const chart = markRaw(echarts.init(container, themeId, {
-        locale: chartLocale
-      }))
-      chart.setOption(config.option)
-      chartInstances[index] = chart
+      try {
+        const chart = markRaw(echarts.init(container, themeId, {
+          locale: chartLocale
+        }))
+        chart.setOption(config.option)
+        chartInstances[index] = chart
+      } catch (error) {
+        console.error(`Failed to render chart "${config.title}":`, error)
+      }
     })
   })
 }
@@ -101,9 +112,11 @@ function handleResize() {
 
 const debouncedHandleResize = debounce(handleResize, 100)
 
-onMounted(async () => {
+onMounted(() => {
   window.addEventListener('resize', debouncedHandleResize)
-  await ensureMapsRegistered().catch(error => console.error('Failed to load map data:', error))
+  // Fire the fetch early so it's likely already resolved by the time
+  // _updateChartsImpl awaits it; that await is what actually guarantees ordering.
+  ensureMapsRegistered().catch(error => console.error('Failed to load map data:', error))
   updateCharts()
 })
 
