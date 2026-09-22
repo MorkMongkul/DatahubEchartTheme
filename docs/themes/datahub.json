@@ -1,0 +1,173 @@
+{
+    "version": 1,
+    "themeName": "cdriDatahubTheme",
+    "theme": {
+        "seriesCnt": 3,
+        "backgroundColor": "rgba(0,0,0,0)",
+        "titleColor": "#0b1220",
+        "subtitleColor": "#6788cb",
+        "textColorShow": true,
+        "textColor": "#233a66",
+        "markTextColor": "#f4f6fb",
+        "color": [
+            "#14a0b8",
+            "#4994df",
+            "#4c41c8",
+            "#8f3d8f",
+            "#da2f54",
+            "#f59847",
+            "#bd910f",
+            "#485922"
+        ],
+        "borderColor": "#ffffff",
+        "borderWidth": 0,
+        "visualMapColor": [
+            "#0c5e6c",
+            "#14a0b8",
+            "#5ed8ed",
+            "#d6f5fa"
+        ],
+        "legendTextColor": "#233a66",
+        "kColor": "#c23531",
+        "kColor0": "#314656",
+        "kBorderColor": "#c23531",
+        "kBorderColor0": "#314656",
+        "kBorderWidth": 1,
+        "lineWidth": 2,
+        "symbolSize": 6,
+        "symbol": "circle",
+        "symbolBorderWidth": 1,
+        "lineSmooth": false,
+        "graphLineWidth": 1,
+        "graphLineColor": "#9cb2dd",
+        "mapLabelColor": "#233a66",
+        "mapLabelColorE": "#0b1220",
+        "mapBorderColor": "#ffffff",
+        "mapBorderColorE": "#14a0b8",
+        "mapBorderWidth": 1,
+        "mapBorderWidthE": 1.5,
+        "mapAreaColor": "#e4eaf6",
+        "mapAreaColorE": "#acebf6",
+        "axes": [
+            {
+                "type": "all",
+                "name": "General Axis",
+                "axisLineShow": true,
+                "axisLineColor": "#c6d3eb",
+                "axisTickShow": true,
+                "axisTickColor": "#c6d3eb",
+                "axisLabelShow": true,
+                "axisLabelColor": "#6788cb",
+                "splitLineShow": true,
+                "splitLineColor": [
+                    "#e4eaf6"
+                ],
+                "splitAreaShow": false,
+                "splitAreaColor": [
+                    "rgba(244,246,251,0.6)",
+                    "rgba(255,255,255,0)"
+                ]
+            },
+            {
+                "type": "category",
+                "name": "Category Axis",
+                "axisLineShow": true,
+                "axisLineColor": "#c6d3eb",
+                "axisTickShow": true,
+                "axisTickColor": "#c6d3eb",
+                "axisLabelShow": true,
+                "axisLabelColor": "#6788cb",
+                "splitLineShow": false,
+                "splitLineColor": [
+                    "#e4eaf6"
+                ],
+                "splitAreaShow": false,
+                "splitAreaColor": [
+                    "rgba(244,246,251,0.6)",
+                    "rgba(255,255,255,0)"
+                ]
+            },
+            {
+                "type": "value",
+                "name": "Value Axis",
+                "axisLineShow": false,
+                "axisLineColor": "#c6d3eb",
+                "axisTickShow": false,
+                "axisTickColor": "#c6d3eb",
+                "axisLabelShow": true,
+                "axisLabelColor": "#6788cb",
+                "splitLineShow": true,
+                "splitLineColor": [
+                    "#e4eaf6"
+                ],
+                "splitAreaShow": false,
+                "splitAreaColor": [
+                    "rgba(244,246,251,0.6)",
+                    "rgba(255,255,255,0)"
+                ]
+            },
+            {
+                "type": "log",
+                "name": "Log Axis",
+                "axisLineShow": false,
+                "axisLineColor": "#c6d3eb",
+                "axisTickShow": false,
+                "axisTickColor": "#c6d3eb",
+                "axisLabelShow": true,
+                "axisLabelColor": "#6788cb",
+                "splitLineShow": true,
+                "splitLineColor": [
+                    "#e4eaf6"
+                ],
+                "splitAreaShow": false,
+                "splitAreaColor": [
+                    "rgba(244,246,251,0.6)",
+                    "rgba(255,255,255,0)"
+                ]
+            },
+            {
+                "type": "time",
+                "name": "Time Axis",
+                "axisLineShow": true,
+                "axisLineColor": "#c6d3eb",
+                "axisTickShow": true,
+                "axisTickColor": "#c6d3eb",
+                "axisLabelShow": true,
+                "axisLabelColor": "#6788cb",
+                "splitLineShow": false,
+                "splitLineColor": [
+                    "#e4eaf6"
+                ],
+                "splitAreaShow": false,
+                "splitAreaColor": [
+                    "rgba(244,246,251,0.6)",
+                    "rgba(255,255,255,0)"
+                ]
+            }
+        ],
+        "axisSeperateSetting": true,
+        "toolboxColor": "#9cb2dd",
+        "toolboxEmphasisColor": "#2f4d89",
+        "tooltipAxisColor": "#9cb2dd",
+        "tooltipAxisWidth": 1,
+        "timelineLineColor": "#e4eaf6",
+        "timelineLineWidth": 1,
+        "timelineItemColor": "#9cb2dd",
+        "timelineItemColorE": "#ffffff",
+        "timelineCheckColor": "#14a0b8",
+        "timelineCheckBorderColor": "#ffffff",
+        "timelineItemBorderWidth": 1,
+        "timelineControlColor": "#9cb2dd",
+        "timelineControlBorderColor": "#9cb2dd",
+        "timelineControlBorderWidth": 0.5,
+        "timelineLabelColor": "#6788cb",
+        "gridLeft": "15%",
+        "gridRight": "10%",
+        "gridTop": 65,
+        "gridBottom": 80,
+        "legendLeft": "center",
+        "legendRight": "auto",
+        "legendTop": "auto",
+        "legendBottom": 15
+    }
+}
